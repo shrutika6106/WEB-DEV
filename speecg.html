@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Speech to Text Notes</title>
+</head>
+<body style="text-align:center; font-family: Arial; padding: 40px; background-color: #f4f9ff;">
+
+  <h2 style="color: #333;">🗣️ Speech to Text Notes</h2>
+
+  <button onclick="startListening()" style="padding: 10px 20px; font-size: 16px; border: none; background-color: #4caf50; color: white; border-radius: 10px; cursor: pointer;">
+    🎤 Start Speaking
+  </button>
+
+  <ul id="notesList" style="margin-top: 30px; list-style: none; padding: 0;"></ul>
+
+  <script>
+    let notesList = document.getElementById("notesList");
+
+    function startListening() {
+      if (!('webkitSpeechRecognition' in window)) {
+        alert("Your browser does not support Speech Recognition. Try Chrome.");
+        return;
+      }
+
+      let recognition = new webkitSpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.start();
+
+      recognition.onresult = function(event) {
+        let speechResult = event.results[0][0].transcript;
+
+        let li = document.createElement("li");
+        li.textContent = speechResult;
+        li.style.backgroundColor = "#e6f7ff";
+        li.style.margin = "10px auto";
+        li.style.padding = "10px";
+        li.style.border = "1px solid #2196f3";
+        li.style.borderRadius = "8px";
+        li.style.width = "300px";
+
+        notesList.appendChild(li);
+      };
+
+      recognition.onerror = function(event) {
+        alert("Error occurred: " + event.error);
+      };
+    }
+  </script>
+</body>
+</html>
